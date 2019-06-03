@@ -44,9 +44,27 @@ class LoginController extends Controller
             return back()->withErrors([
             'message' => 'Wrong login Credentials'
             ]);
-        }
+        }else {
 
-        return redirect('/teams');
+            return redirect()->route('teams-index');
+            if(auth()->user()->is_verified) {
+
+                return redirect()->route('\teams');
+            } else {
+                $this->destroy();
+                return back()->withErrors(['message' => 'You are not verified, please check your email for verification!']);
+            }
+        }
+    }
+
+    public function verification ($id) {
+
+        $user = User::find($id);
+
+        $user->is_verified = true;
+        $user->save();
+
+        return view('login.verification', compact('user'));
     }
 
     /**
@@ -92,6 +110,11 @@ class LoginController extends Controller
     public function destroy () {
         auth()->logout();
 
+        return redirect()->route('teams-index');
+    }
+
+    public function logout(){
+        auth()->logout();
         return redirect()->route('teams-index');
     }
 
