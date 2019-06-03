@@ -18,4 +18,35 @@
         </div>
     @endforeach
 
+    <hr>
+    <ul class="unstyled">
+        @foreach ($team->comments as $comment)
+            <li>
+                <p>
+                    {{ $comment->content }} by {{ $comment->user->name }}
+                </p>
+            </li>
+        @endforeach
+    </ul>
+    <hr>
+
+    <h2>Leave a comment</h2>
+
+    <form method="POST" action="{{ route('team-comments', ['team_id' => $team->id]) }}">
+
+        {{ csrf_field() }}
+
+        <div class="form-group">
+            <label for="content">Content</label>
+            <textarea type="email" class="form-control" id="content" name="content"></textarea>
+            @include('partials.error-message', ['fieldTitle' => 'content'])
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+
+    </form>
+
+
 @endsection

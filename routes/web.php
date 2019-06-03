@@ -25,3 +25,5 @@ Route::group(['middleware' => ['auth']],function(){
 });
 
 Route::get('/logout','LoginController@logout')->name('logout');
+
+Route::post('/teams/{team_id}/comments', ['as' => 'team-comments', 'uses' => 'CommentsController@store']);

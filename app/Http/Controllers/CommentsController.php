@@ -3,16 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Team;
-use App\User;
 
-class TeamsController extends Controller
+class CommentsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -20,12 +13,8 @@ class TeamsController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
-        $teams = Team::all();
-
-        return view('teams.index',compact('teams'));
+        //
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -43,10 +32,24 @@ class TeamsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store (Request $request, $team_id) {
+        $request->validate(
+            [
+                'content' => 'required | min:10'
+            ]
+        );
+
+        $team = Team::find($team_id);
+
+        Comment::create([
+            'content' => $request->get('content'),
+            'team_id' => $team->id,
+            'user_id' => Auth::user()->id,
+        ]);
+
+        return redirect()->route('single-team', ['id' => $team_id]);
     }
+
 
     /**
      * Display the specified resource.
@@ -56,12 +59,9 @@ class TeamsController extends Controller
      */
     public function show($id)
     {
-        $user = auth()->user();
-        $team = Team::with('players', 'comments.user')->find($id);
-
-
-        return view('teams.show',compact('team'));
+        //
     }
+
     /**
      * Show the form for editing the specified resource.
      *

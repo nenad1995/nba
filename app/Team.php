@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Player;
+use App\Comment;
 
 class Team extends Model
 {
@@ -10,4 +12,10 @@ class Team extends Model
     {
         return $this->hasMany(Player::class);
     }
+
+    public function comments ()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
 }
