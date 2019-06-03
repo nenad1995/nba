@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Team;
+use App\User;
 
 class TeamsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,6 +20,7 @@ class TeamsController extends Controller
      */
     public function index()
     {
+        $user = auth()->user();
         $teams = Team::all();
 
         return view('teams.index',compact('teams'));
@@ -49,6 +56,7 @@ class TeamsController extends Controller
      */
     public function show($id)
     {
+        $user = auth()->user();
         $team = Team::findOrFail($id);
 
         return view('teams.show',compact('team'));

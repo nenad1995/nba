@@ -11,15 +11,17 @@
 |
 */
 
-Route::get('/register', ['as' => 'register', 'uses' => 'RegisterController@create']);
-Route::post('/register', 'RegisterController@store');
+Route::group(['middleware' => ['guest']],function(){
+    Route::get('/register',['as'=> 'show-register', 'uses' => 'RegisterController@create']);
+    Route::post('/register','RegisterController@store')->name('register');
+    Route::get('/login','LoginController@create')->name('show-login');
+    Route::post('/login','LoginController@store')->name('login');
+});
 
-Route::get('/login', ['as' => 'login', 'uses' => 'LoginController@create']);
-Route::post('/login', 'LoginController@store');
-Route::get('/logout', ['as' => 'logout', 'uses' => 'LoginController@destroy']);
+Route::group(['middleware' => ['auth']],function(){
+    Route::get('/teams','TeamsController@index')->name('teams-index');
+    Route::get('/teams/{id}','TeamsController@show')->name('teams-show');
+    Route::get('/players/{id}','PlayerController@show')->name('players-show');
+});
 
-
-Route::get('/teams','TeamsController@index')->name('teams-index');
-Route::get('/teams/{id}','TeamsController@show')->name('teams-show');
-Route::get('/players/{id}','PlayersController@show')->name('players-show');
-
+Route::get('/logout','LoginController@logout')->name('logout');

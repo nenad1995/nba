@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Player;
+use App\User;
 
 class PlayersController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -46,6 +52,7 @@ class PlayersController extends Controller
      */
     public function show($id)
     {
+        $user = auth()->user();
         $player = Player::findOrFail($id);
 
         return view('players.show',compact('player'));
