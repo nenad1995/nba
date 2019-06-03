@@ -11,6 +11,15 @@
 |
 */
 
+Route::get('/register', ['as' => 'register', 'uses' => 'RegisterController@create']);
+Route::post('/register', 'RegisterController@store');
+
+Route::get('/login', ['as' => 'login', 'uses' => 'LoginController@create']);
+Route::post('/login', 'LoginController@store');
+Route::get('/logout', ['as' => 'logout', 'uses' => 'LoginController@destroy']);
+
+
 Route::get('/teams','TeamsController@index')->name('teams-index');
 Route::get('/teams/{id}','TeamsController@show')->name('teams-show');
 Route::get('/players/{id}','PlayersController@show')->name('players-show');
+
