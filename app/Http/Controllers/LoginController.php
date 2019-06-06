@@ -9,7 +9,7 @@ class LoginController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('guest', ['except' => 'destroy']);
+        $this->middleware('guest', ['except' => 'logout']);
     }
 
     /**
@@ -54,7 +54,7 @@ class LoginController extends Controller
 
                 return redirect()->route('teams-index');
             } else {
-                $this->destroy();
+                $this->logout();
                 return back()->withErrors(['message' => 'You are not verified, please check your email for verification!']);
             }
         }
@@ -110,11 +110,6 @@ class LoginController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy () {
-        auth()->logout();
-
-        return redirect()->route('teams-index');
-    }
 
     public function logout(){
         auth()->logout();

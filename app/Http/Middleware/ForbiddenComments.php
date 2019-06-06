@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class ForbiddenCommentsWords
+class ForbiddenComment
 {
     /**
      * Handle an incoming request.
@@ -23,7 +23,7 @@ class ForbiddenCommentsWords
 
         foreach ($forbidden_words as $word) {
             if(strstr($request->content, $word)) {
-                return response(view('teams.forbidden-comment'));
+                return response(view('teams.forbidden-comments'));
             }
         }
 

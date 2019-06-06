@@ -30,5 +30,5 @@ class AddIsVerifiedFieldToUsersTable extends Migration
         {
             $table->dropColumn('is_verified');
         });
-
+    }
 }

@@ -10,10 +10,6 @@ use App\Mail\UserVerification;
 
 class RegisterController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('guest');
-    }
 
     /**
      * Display a listing of the resource.
@@ -47,15 +43,13 @@ class RegisterController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required | confirmed:password_confirmation | min:6',
-            'is_verified' => false,
+            'password' => 'required | confirmed | min:6'
         ]);
 
         $data = $request->only(['email','name','password']);
         $data['password'] = bcrypt($data['password']);
 
         $user = User::create($data);
-        auth()->login($user);
 
         Mail::to($request->email)->send(new UserVerification($user));
 
