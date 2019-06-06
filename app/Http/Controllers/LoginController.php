@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\User;
 
 class LoginController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('guest', ['except' => 'destroy']);
+    }
 
     /**
      * Display a listing of the resource.
@@ -46,10 +50,9 @@ class LoginController extends Controller
             ]);
         }else {
 
-            return redirect()->route('teams-index');
             if(auth()->user()->is_verified) {
 
-                return redirect()->route('\teams');
+                return redirect()->route('teams-index');
             } else {
                 $this->destroy();
                 return back()->withErrors(['message' => 'You are not verified, please check your email for verification!']);

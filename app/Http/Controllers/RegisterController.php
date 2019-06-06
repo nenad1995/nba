@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\UserVerification;
+
 class RegisterController extends Controller
 {
     public function __construct()
@@ -44,7 +47,8 @@ class RegisterController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required | confirmed:password_confirmation | min:6'
+            'password' => 'required | confirmed:password_confirmation | min:6',
+            'is_verified' => false,
         ]);
 
         $data = $request->only(['email','name','password']);
@@ -53,7 +57,9 @@ class RegisterController extends Controller
         $user = User::create($data);
         auth()->login($user);
 
-        return redirect('/teams');
+        Mail::to($request->email)->send(new UserVerification($user));
+
+        return redirect()->route('login');
     }
 
     /**
