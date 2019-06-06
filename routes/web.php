@@ -28,3 +28,6 @@ Route::get('/logout','LoginController@logout')->name('logout');
 Route::get('/verification/{id}', ['as' => 'verification', 'uses' => 'LoginController@verification']);
 
 Route::post('/teams/{team_id}/comments', ['as' => 'team-comments', 'uses' => 'CommentsController@store']);
+
+Route::get('/news','NewsController@index')->name('news-index');
+Route::get('/news/{id}','NewsController@show')->name('news-show');
