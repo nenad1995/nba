@@ -27,6 +27,7 @@ Route::group(['middleware' => ['auth']],function(){
 Route::get('/logout','LoginController@logout')->name('logout');
 Route::get('/verification/{id}', ['as' => 'verification', 'uses' => 'LoginController@verification']);
 
+Route::get('/team/news/{id}','TeamNewsController@index')->name('tags-posts');
 Route::post('/teams/{team_id}/comments', ['as' => 'team-comments', 'uses' => 'CommentsController@store']);
 
 Route::get('/news','NewsController@index')->name('news-index');

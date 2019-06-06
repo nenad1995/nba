@@ -21,7 +21,7 @@ class TeamsController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $teams = Team::all();
+        $teams = Team::all()->pagination(10);;
 
         return view('teams.index',compact('teams'));
     }

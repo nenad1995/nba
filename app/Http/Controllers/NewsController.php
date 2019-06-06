@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\News;
 use App\User;
+use App\Team;
 
 class NewsController extends Controller
 {
@@ -13,10 +14,10 @@ class NewsController extends Controller
 
         return view('news.index',compact('news'));
     }
-    public function show($id)
+    public function show(Team $teams, $id)
     {
         $user = auth()->user();
-        $new = News::findOrFail($id);
+        $new =$teams->news()->paginate(10); ;
 
         return view('news.show',compact('new'));
     }
