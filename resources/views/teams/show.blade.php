@@ -19,15 +19,18 @@
     @endforeach
 
     <hr>
-    <ul class="unstyled">
-        @foreach ($team->comments as $comment)
-            <li>
-                <p>
-                    {{ $comment->content }} by {{ $comment->user->name }}
-                </p>
-            </li>
-        @endforeach
-    </ul>
+    @foreach($team->comments as $comment)
+        <div class="p-4 alert alert-success">
+            <div class ="text-muted">
+                {{$comment->created_at}}
+            </div>
+            <p>{{$comment}}</p>
+            @if($comment->user)
+                <strong>{{$comment->user->name}} says: </strong>
+            @endif
+                {{ $comment->content}}
+        </div>
+@endforeach
     <hr>
 
     <h2>Leave a comment</h2>

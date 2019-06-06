@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Team;
+use App\Comment;
+use App\User;
+use App\Http\Requests\CreateCommentRequest;
+use Illuminate\Support\Facades\Auth;
 use App\Mail\CommentReceived;
 
 class CommentsController extends Controller
@@ -38,7 +43,8 @@ class CommentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store (Request $request, $team_id) {
+    public function store (CreateCommentRequest $request, $team_id) {
+
         $request->validate(
             [
                 'content' => 'required | min:10'
@@ -47,13 +53,19 @@ class CommentsController extends Controller
 
         $team = Team::find($team_id);
 
-        Comment::create([
+        $comment = Comment::create([
             'content' => $request->get('content'),
             'team_id' => $team->id,
             'user_id' => Auth::user()->id,
         ]);
 
-        return redirect()->route('single-team', ['id' => $team_id]);
+        if ($comment->team->user) {
+            \Mail::to($comment->team->user)->send(new CommentReceived(
+                $comment->team, $comment
+            ));
+        }
+
+        return redirect(route('teams-show', [ 'id' => $teamId ]));
     }
 
 
